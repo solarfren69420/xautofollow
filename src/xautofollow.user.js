@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SolarFren X AutoFollower
 // @namespace    https://github.com/solarfren69420
-// @version      1.0.2
+// @version      1.0.3
 // @description  Smart AutoFollower for founder, builder, indie hacker and networking posts on X.
 // @author       SolarFren
 // @license      MIT
@@ -24,10 +24,10 @@
 
     /******************************************************************
      * SOLARFREN X AUTOFOLLOWER
-     * v1.0.2
+     * v1.0.3
      ******************************************************************/
 
-    const VERSION = '1.0.2';
+    const VERSION = '1.0.3';
 
     /******************************************************************
      * CONFIGURATION
@@ -125,6 +125,12 @@
             path.startsWith('/i/chat') ||
             path.startsWith('/messages')
         );
+    }
+
+    function isNotificationsRoute() {
+        return location.pathname
+            .toLowerCase()
+            .startsWith('/notifications');
     }
 
     /******************************************************************
@@ -1254,8 +1260,20 @@
             blocked
                 ? 'BLOCKED'
                 : active
-                    ? 'ACTIVE'
+                    ? isNotificationsRoute()
+                        ? 'NOTIFICATIONS'
+                        : 'ACTIVE'
                     : 'PAUSED';
+
+        const followedHandles =
+            Array.from(followedThisSession)
+                .sort((a, b) => a.localeCompare(b));
+
+        const followedList = followedHandles.length
+            ? followedHandles
+                .map(handle => `<div style="padding:3px 0;color:#d9f7e0;">✓ @${escapeHTML(handle)}</div>`)
+                .join('')
+            : '<div style="padding:3px 0;color:#71767b;">No accounts followed yet.</div>';
 
         const hourlyPercent =
             Math.min(
@@ -1435,6 +1453,34 @@
                                 width .25s ease;
                         "></div>
                     </div>
+                </div>
+
+                <div
+                    aria-label="Accounts followed this session"
+                    style="
+                        margin-top:12px;
+                        padding:8px 10px;
+                        max-height:92px;
+                        overflow-y:auto;
+                        border-radius:10px;
+                        background:rgba(0,230,118,.045);
+                        border:1px solid rgba(0,230,118,.12);
+                        font-size:9px;
+                        line-height:1.35;
+                    "
+                >
+                    <div style="
+                        position:sticky;
+                        top:-8px;
+                        padding:0 0 5px;
+                        background:#101820;
+                        color:#71767b;
+                        letter-spacing:.8px;
+                        font-size:8px;
+                    ">
+                        FOLLOWED THIS SESSION (${followedHandles.length})
+                    </div>
+                    ${followedList}
                 </div>
 
                 <div style="

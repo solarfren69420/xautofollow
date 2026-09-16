@@ -46,6 +46,8 @@ npm run check
 - Built-in hourly local follow limit
 - Pause / Resume control
 - Minimize / Restore control with the panel size remembered across page reloads
+- Scrollable list of every account followed during the current session
+- Scans the X Notifications page as an active route
 - Live SolarFren dashboard
 
 ## Install

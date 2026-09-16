@@ -50,6 +50,26 @@ npm run check
 - Scans the X Notifications page as an active route
 - Live SolarFren dashboard
 
+## How to get the right feed
+
+You create the signal first. SolarFren does not write posts or fake engagement.
+Post an introduction like this from your own X account, replacing the brackets:
+
+```text
+I'm [your age].
+
+[Your role] from [your location].
+
+Looking to connect with more builders & indie hackers!
+```
+
+Then interact with similar posts—reply, like, and follow people doing the work
+you want to discover. As X learns that this is the conversation you care about,
+your feed fills with more of those introductions. Run SolarFren after that: it
+scans the feed you built, including quoted posts and the Notifications page.
+
+The same template is saved in `solar-fren-post-template.txt`.
+
 ## Install
 
 You need a userscript manager such as Tampermonkey.

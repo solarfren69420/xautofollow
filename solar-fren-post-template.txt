@@ -1,0 +1,20 @@
+SOLARFREN X INTRO TEMPLATE
+==========================
+
+Replace the bracketed parts, then post this from your own X account:
+
+I'm [your age].
+
+[Your role] from [your location].
+
+Looking to connect with more builders & indie hackers!
+
+FLOW
+----
+1. Post your introduction.
+2. Reply, like, and follow similar builder/founder posts.
+3. Let X learn that this is the conversation you want; your feed should fill with more of it.
+4. Run SolarFren on that feed. It scans normal posts, quoted posts, and Notifications.
+
+SolarFren does not write posts or manufacture engagement. You create the signal;
+the script helps you discover people in the feed you built.

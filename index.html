@@ -71,6 +71,14 @@
     .feature-number { color:var(--yellow); font-size:12px; }
     h3 { font-size:18px; letter-spacing:-.5px; margin:15px 0 10px; }
     .feature p { color:var(--muted); font-size:14px; margin:0; }
+    .template-grid { display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:stretch; margin-top:32px; }
+    .template-card { border:1px solid var(--line); border-radius:12px; background:var(--panel); padding:22px; }
+    .template-card h3 { margin-top:0; }
+    .template-card p { color:var(--muted); font-size:14px; }
+    pre.template { margin:20px 0 0; padding:18px; overflow:auto; border:1px solid #33424e; border-radius:8px; background:#080d12; color:var(--text); font:14px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace; white-space:pre-wrap; }
+    .flow { display:grid; gap:13px; margin-top:20px; }
+    .flow div { border-left:2px solid var(--blue); padding:8px 12px; color:var(--muted); font-size:13px; }
+    .flow b { color:var(--text); }
     .showcase { border:1px solid var(--line); background:var(--panel); border-radius:12px; overflow:hidden; margin:30px 0 0; }
     .showcase img { width:100%; height:auto; display:block; }
     figcaption { font-size:12px; padding:13px 18px; color:var(--muted); }
@@ -88,6 +96,7 @@
     footer div { display:flex; gap:22px; }
     @media(max-width:800px) { .hero-grid { gap:34px; } h1 { letter-spacing:-3px; } .hero { padding-top:58px; } .preview { padding:14px; } .preview-top { font-size:8px; } .install-grid { gap:35px; } }
     @media(max-width:620px) { .wrap { width:calc(100% - 36px); } nav { min-height:72px; gap:12px; } .nav-links { gap:15px; } .nav-links .features-link { display:none; } .brand { font-size:18px; } .hero-grid,.features,.install-grid { grid-template-columns:1fr; } .hero { padding:48px 0; } h1 { font-size:50px; } .intro { font-size:16px; } .preview { max-width:385px; width:100%; margin:16px auto 8px; transform:none; padding:22px; } .strip { gap:12px 24px; font-size:10px; } section { padding:52px 0; } .features { gap:26px; } .install-grid { gap:38px; } .preview-top { font-size:10px; } }
+    @media(max-width:620px) { .template-grid { grid-template-columns:1fr; } }
     @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .button { transition:none; } .button:hover { transform:none; } }
   </style>
 </head>
@@ -104,12 +113,12 @@
         <h1>Find your people.<br><span>Keep building.</span></h1>
         <p class="intro">Your next internet fren is already on your timeline. SolarFren spots founder, builder, and networking introductions on X—and follows matching accounts as you scroll.</p>
         <div class="actions"><a class="button primary" href="https://raw.githubusercontent.com/solarfren69420/xautofollow/main/dist/xautofollow.user.js">Install userscript <span aria-hidden="true">↗</span></a><a class="button" href="#in-action">See it in action <span aria-hidden="true">↓</span></a></div>
-        <div class="fine mono">FREE + OPEN SOURCE / v1.0.1 / REQUIRES TAMPERMONKEY</div>
+        <div class="fine mono">FREE + OPEN SOURCE / v1.0.3 / REQUIRES TAMPERMONKEY</div>
       </div>
       <div class="preview">
         <div class="preview-top mono"><span class="window-dots" aria-hidden="true">● ● ●</span><span>YOUR TIMELINE, WITH A LITTLE HELP</span></div>
         <img class="dashboard" src="assets/dashboard.png" alt="Actual SolarFren dashboard showing one followed account, an hourly limit of 40, and pause and minimize controls." width="329" height="299" fetchpriority="high">
-        <div class="preview-bottom mono"><span>↳ ACTUAL PRODUCT SCREENSHOT</span><span>v1.0.1 / ON X</span></div>
+        <div class="preview-bottom mono"><span>↳ ACTUAL PRODUCT SCREENSHOT</span><span>v1.0.3 / ON X</span></div>
       </div>
     </div></div>
     <div class="wrap strip mono"><span><b>01 /</b> RUNS IN YOUR BROWSER</span><span><b>02 /</b> PAUSE ANYTIME</span><span><b>03 /</b> MIT LICENSED</span><span><b>04 /</b> MADE BY @SOLARFREN69420</span></div>
@@ -123,11 +132,24 @@
         <article class="feature"><span class="feature-number mono">[03] MAKE IT YOURS</span><h3>Readable code, yours to tune.</h3><p>Adjust the matching score, delays, and follow limit in the source. Inspect every line, fork it, or build on it.</p></article>
       </div>
     </section>
+    <section id="how-it-works" class="wrap">
+      <div class="section-label mono">YOU START THE SIGNAL</div>
+      <h2>Post the template first.</h2>
+      <p class="section-copy">SolarFren does not invent posts or manufacture engagement. You post your own introduction, interact with similar builder posts, let X learn that this is the conversation you want, then run the script on the feed that results.</p>
+      <div class="template-grid">
+        <article class="template-card"><h3>Copy this template</h3><p>Replace the brackets, post it from your own X account, and make it sound like you.</p><pre class="template">I'm [your age].
+
+[Your role] from [your location].
+
+Looking to connect with more builders &amp; indie hackers!</pre><p class="fine mono">EXAMPLE: “I'm 35. / Solo founder from U.S.A. / Looking to connect with more builders &amp; indie hackers!”</p></article>
+        <article class="template-card"><h3>Then the feed compounds</h3><div class="flow"><div><b>01 / Post it.</b><br>Your intro gives the network a real signal.</div><div><b>02 / Interact.</b><br>Reply, like, and follow people doing the kind of work you want to see.</div><div><b>03 / Let X tune the feed.</b><br>As you interact with those posts, your timeline fills with more relevant introductions.</div><div><b>04 / Run SolarFren.</b><br>Install the script and let it scan that feed for matching people, including quoted posts and Notifications.</div></div></article>
+      </div>
+    </section>
     <section id="in-action" class="wrap screens">
       <div class="section-label mono">STRAIGHT FROM THE TIMELINE</div>
       <h2>This is what it actually looks like.</h2>
       <p class="section-copy">X as usual, with the SolarFren dashboard tucked into the corner.</p>
-      <figure class="showcase"><a href="assets/xautofollow-in-action.png" aria-label="Open the full-resolution screenshot"><img src="assets/xautofollow-in-action.png" alt="SolarFren running on the X home timeline. The compact dashboard sits at the bottom right, showing scanning status and a pause button." width="1574" height="975" loading="lazy"></a><figcaption>SolarFren v1.0.1 on X · real screenshot · click to view full size.</figcaption></figure>
+      <figure class="showcase"><a href="assets/xautofollow-in-action.png" aria-label="Open the full-resolution screenshot"><img src="assets/xautofollow-in-action.png" alt="SolarFren running on the X home timeline. The compact dashboard sits at the bottom right, showing scanning status and a pause button." width="1574" height="975" loading="lazy"></a><figcaption>SolarFren v1.0.3 on X · real screenshot · click to view full size.</figcaption></figure>
     </section>
     <section id="install" class="install-section"><div class="wrap install-grid">
       <div><div class="section-label mono">READY WHEN YOU ARE</div><h2>Meet your next fren.</h2><p class="section-copy">Install once, then open your timeline.</p><div class="actions"><a class="button primary" href="https://raw.githubusercontent.com/solarfren69420/xautofollow/main/dist/xautofollow.user.js">Get SolarFren <span aria-hidden="true">↗</span></a></div><p class="note">The default 40-per-hour counter applies to this page session; reloading or opening another tab starts a separate counter. X may enforce its own limits.</p></div>

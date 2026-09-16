@@ -981,6 +981,13 @@
         if (!text)
             return;
 
+        // Scan quoted cards even when the surrounding post is unrelated.
+        if (includeQuoted) {
+            getQuotedTweets(tweet).forEach(
+                quotedTweet => enqueueTweet(quotedTweet, false)
+            );
+        }
+
         if (!isTargetPost(text))
             return;
 
@@ -1011,12 +1018,6 @@
         ) {
             finishedKeys.add(key);
             return;
-        }
-
-        if (includeQuoted) {
-            getQuotedTweets(tweet).forEach(
-                quotedTweet => enqueueTweet(quotedTweet, false)
-            );
         }
 
         queuedKeys.add(key);

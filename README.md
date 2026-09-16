@@ -9,6 +9,8 @@ A Tampermonkey userscript that automatically discovers and follows people postin
 - `build.cjs` — preserves the userscript metadata and minifies the code with Terser
 - `package.json` / `package-lock.json` — build commands and locked dependencies
 - `LICENSE` — MIT license
+- `index.html` — standalone GitHub Pages landing page; no build required
+- `assets/` — actual product screenshots and social preview image
 
 To rebuild after editing the source:
 
@@ -56,6 +58,31 @@ https://raw.githubusercontent.com/solarfren69420/xautofollow/main/dist/xautofoll
 Tampermonkey should offer to install it.
 
 Then open X and scroll normally.
+
+## GitHub Pages
+
+The landing page is plain HTML/CSS with local images and no external dependencies.
+To deploy it, open [Settings → Pages](https://github.com/solarfren69420/xautofollow/settings/pages),
+choose **Deploy from a branch**, select **main** and **/(root)**, and save.
+The site will be available at https://solarfren69420.github.io/xautofollow/ after deployment.
+Future pushes to `main` update the page automatically.
+
+To preview locally, run `python3 -m http.server 8000 --bind 127.0.0.1` from the
+repository and open http://127.0.0.1:8000/.
+
+### Show the real product in shared links
+
+- **GitHub repository links:** open [Settings](https://github.com/solarfren69420/xautofollow/settings),
+  find **Social preview → Edit → Upload an image**, and upload `assets/social-preview.png`.
+- **Landing page links:** the page already includes Open Graph and X Card metadata
+  pointing to the same image. Publish Pages before sharing its URL.
+- **An X post with an image:** attach `assets/social-preview.png` for the dashboard,
+  or `assets/xautofollow-in-action.png` to show the full X timeline. The text draft
+  is saved locally outside this repository.
+
+The preview image uses the actual dashboard screenshot. Its editable HTML layout
+is `assets/social-preview.html` (render at 1280 × 640). Existing link previews may
+remain cached; updating this repository's HTML does not change GitHub's own preview.
 
 ## Dashboard
 

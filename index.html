@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090e13">
+  <title>SolarFren — Find your people on X.</title>
+  <meta name="description" content="A free, open-source Tampermonkey userscript that spots founder, builder, and networking introductions on X. Meet your next internet fren.">
+  <link rel="canonical" href="https://solarfren69420.github.io/xautofollow/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SolarFren X AutoFollower — Find your people.">
+  <meta property="og:description" content="Founder intros. Builder energy. More internet frens. A free Tampermonkey userscript for X, with pause and minimize controls.">
+  <meta property="og:url" content="https://solarfren69420.github.io/xautofollow/">
+  <meta property="og:image" content="https://solarfren69420.github.io/xautofollow/assets/social-preview.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  <meta property="og:image:alt" content="SolarFren X AutoFollower with a real screenshot of its dashboard running on X.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:creator" content="@solarfren69420">
+  <meta name="twitter:title" content="SolarFren X AutoFollower — Find your people.">
+  <meta name="twitter:description" content="A little less clicking. A few more internet frens. Free and open source.">
+  <meta name="twitter:image" content="https://solarfren69420.github.io/xautofollow/assets/social-preview.png">
+  <meta name="twitter:image:alt" content="The actual SolarFren dashboard: follow counters, hourly activity, pause, and minimize controls.">
+  <style>
+    :root { color-scheme:dark; --bg:#090e13; --panel:#101820; --text:#edf3f5; --muted:#a1afb9; --line:#25303a; --blue:#4abaff; --green:#a5f0b5; --yellow:#f4c976; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:Arial,Helvetica,sans-serif; line-height:1.6; }
+    a { color:inherit; text-decoration:none; }
+    button { font:inherit; }
+    a:focus-visible,button:focus-visible { outline:3px solid var(--yellow); outline-offset:5px; }
+    .wrap { width:min(1140px,calc(100% - 64px)); margin:auto; }
+    .mono { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
+    .skip { position:absolute; top:-100px; left:20px; background:var(--yellow); color:#111; padding:10px; z-index:10; }
+    .skip:focus { top:10px; }
+    header { border-bottom:1px solid var(--line); }
+    nav { display:flex; align-items:center; justify-content:space-between; min-height:86px; gap:24px; }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:800; font-size:21px; letter-spacing:-.7px; }
+    .sun { color:var(--yellow); font-size:32px; line-height:1; }
+    .nav-links { display:flex; align-items:center; gap:30px; font-size:13px; color:var(--muted); }
+    .nav-links a:hover,footer a:hover { color:var(--blue); }
+    .nav-pill { border:1px solid var(--line); border-radius:8px; padding:9px 15px; color:var(--text); }
+    .hero { position:relative; overflow:hidden; padding:88px 0 76px; }
+    .hero::before { content:""; position:absolute; width:650px; height:650px; right:-260px; top:-120px; background:radial-gradient(circle,#17466466,transparent 65%); pointer-events:none; }
+    .hero-grid { display:grid; grid-template-columns:1.25fr 1fr; align-items:center; gap:72px; position:relative; }
+    .eyebrow { color:var(--green); font-size:11px; letter-spacing:1.7px; text-transform:uppercase; display:flex; align-items:center; gap:9px; }
+    .dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 12px #a5f0b540; }
+    h1 { font-size:clamp(48px,6.8vw,82px); line-height:1.02; letter-spacing:-5px; margin:24px 0; font-weight:800; }
+    h1 span { color:var(--blue); }
+    .intro { max-width:485px; font-size:18px; color:var(--muted); line-height:1.75; }
+    .actions { display:flex; gap:12px; flex-wrap:wrap; margin:30px 0 16px; }
+    .button { display:inline-flex; align-items:center; justify-content:center; gap:14px; padding:13px 20px; border:1px solid var(--line); border-radius:8px; font-size:14px; font-weight:700; transition:background .15s,transform .15s; }
+    .button:hover { background:#1b2834; transform:translateY(-2px); }
+    .primary { background:var(--blue); color:#041421; border-color:var(--blue); }
+    .primary:hover { background:#81ceff; }
+    .fine { font-size:11px; color:var(--muted); }
+    .preview { border:1px solid #33424e; border-radius:15px; background:linear-gradient(150deg,#14232f,#0b121a); padding:22px; box-shadow:0 25px 65px #0005; transform:rotate(2deg); }
+    .preview-top { display:flex; justify-content:space-between; font-size:10px; letter-spacing:1px; color:var(--muted); margin-bottom:24px; }
+    .window-dots { letter-spacing:5px; color:#5b6c7a; }
+    .dashboard { display:block; width:100%; max-width:329px; height:auto; margin:auto; border-radius:14px; }
+    .preview-bottom { display:flex; align-items:center; justify-content:space-between; margin:22px 0 0; font-size:10px; color:var(--green); gap:12px; }
+    .preview-bottom span:last-child { color:var(--muted); }
+    .strip { display:flex; flex-wrap:wrap; gap:22px 40px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:20px 0; color:var(--muted); font-size:11px; letter-spacing:.4px; }
+    .strip b { color:var(--text); font-weight:400; }
+    section { padding:78px 0; scroll-margin-top:20px; }
+    .section-label { font-size:11px; color:var(--blue); letter-spacing:2px; margin-bottom:13px; }
+    h2 { font-size:clamp(29px,4vw,42px); letter-spacing:-1.8px; line-height:1.2; margin:0 0 16px; }
+    .section-copy { color:var(--muted); max-width:580px; margin:0; font-size:15px; }
+    .features { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:38px; }
+    .feature { border-top:1px solid var(--line); padding-top:22px; }
+    .feature-number { color:var(--yellow); font-size:12px; }
+    h3 { font-size:18px; letter-spacing:-.5px; margin:15px 0 10px; }
+    .feature p { color:var(--muted); font-size:14px; margin:0; }
+    .showcase { border:1px solid var(--line); background:var(--panel); border-radius:12px; overflow:hidden; margin:30px 0 0; }
+    .showcase img { width:100%; height:auto; display:block; }
+    figcaption { font-size:12px; padding:13px 18px; color:var(--muted); }
+    .screens { padding-top:0; }
+    .install-section { border-top:1px solid var(--line); background:#0d141c; }
+    .install-grid { display:grid; grid-template-columns:1fr 1fr; gap:70px; }
+    .steps { list-style:none; padding:0; margin:0; counter-reset:step; }
+    .steps li { display:grid; grid-template-columns:36px 1fr; gap:18px; margin-bottom:27px; counter-increment:step; }
+    .steps li::before { content:"0" counter(step); color:var(--blue); font-family:monospace; font-size:13px; padding-top:3px; }
+    .steps h3 { margin:0 0 5px; font-size:16px; }
+    .steps p { color:var(--muted); margin:0; font-size:13px; }
+    .steps a { color:var(--blue); text-decoration:underline; text-underline-offset:3px; }
+    .note { color:var(--muted); font-size:12px; border-left:2px solid var(--line); padding-left:15px; max-width:420px; margin-top:25px; }
+    footer { display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; padding:28px 0 35px; font-size:11px; color:var(--muted); }
+    footer div { display:flex; gap:22px; }
+    @media(max-width:800px) { .hero-grid { gap:34px; } h1 { letter-spacing:-3px; } .hero { padding-top:58px; } .preview { padding:14px; } .preview-top { font-size:8px; } .install-grid { gap:35px; } }
+    @media(max-width:620px) { .wrap { width:calc(100% - 36px); } nav { min-height:72px; gap:12px; } .nav-links { gap:15px; } .nav-links .features-link { display:none; } .brand { font-size:18px; } .hero-grid,.features,.install-grid { grid-template-columns:1fr; } .hero { padding:48px 0; } h1 { font-size:50px; } .intro { font-size:16px; } .preview { max-width:385px; width:100%; margin:16px auto 8px; transform:none; padding:22px; } .strip { gap:12px 24px; font-size:10px; } section { padding:52px 0; } .features { gap:26px; } .install-grid { gap:38px; } .preview-top { font-size:10px; } }
+    @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .button { transition:none; } .button:hover { transform:none; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header><nav class="wrap" aria-label="Main navigation">
+    <a class="brand" href="./" aria-label="SolarFren home"><span class="sun" aria-hidden="true">☀</span> SolarFren<span style="color:var(--blue)">.</span></a>
+    <div class="nav-links"><a class="features-link" href="#features">The script</a><a href="#install">Install</a><a class="nav-pill" href="https://github.com/solarfren69420/xautofollow">GitHub ↗</a></div>
+  </nav></header>
+  <main id="main">
+    <div class="hero"><div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow mono"><span class="dot" aria-hidden="true"></span> Built for builders. Open to frens.</div>
+        <h1>Find your people.<br><span>Keep building.</span></h1>
+        <p class="intro">Your next internet fren is already on your timeline. SolarFren spots founder, builder, and networking introductions on X—and follows matching accounts as you scroll.</p>
+        <div class="actions"><a class="button primary" href="https://raw.githubusercontent.com/solarfren69420/xautofollow/main/dist/xautofollow.user.js">Install userscript <span aria-hidden="true">↗</span></a><a class="button" href="#in-action">See it in action <span aria-hidden="true">↓</span></a></div>
+        <div class="fine mono">FREE + OPEN SOURCE / v1.0.1 / REQUIRES TAMPERMONKEY</div>
+      </div>
+      <div class="preview">
+        <div class="preview-top mono"><span class="window-dots" aria-hidden="true">● ● ●</span><span>YOUR TIMELINE, WITH A LITTLE HELP</span></div>
+        <img class="dashboard" src="assets/dashboard.png" alt="Actual SolarFren dashboard showing one followed account, an hourly limit of 40, and pause and minimize controls." width="329" height="299" fetchpriority="high">
+        <div class="preview-bottom mono"><span>↳ ACTUAL PRODUCT SCREENSHOT</span><span>v1.0.1 / ON X</span></div>
+      </div>
+    </div></div>
+    <div class="wrap strip mono"><span><b>01 /</b> RUNS IN YOUR BROWSER</span><span><b>02 /</b> PAUSE ANYTIME</span><span><b>03 /</b> MIT LICENSED</span><span><b>04 /</b> MADE BY @SOLARFREN69420</span></div>
+    <section id="features" class="wrap">
+      <div class="section-label mono">LESS CLICKING. MORE CONNECTING.</div>
+      <h2>A small script. A friendlier feed.</h2>
+      <p class="section-copy">For the solo founders, late-night builders, and people saying “let’s connect.” A little browser-side help finding each other.</p>
+      <div class="features">
+        <article class="feature"><span class="feature-number mono">[01] FIND THE SIGNAL</span><h3>Looks for your kind of people.</h3><p>Scores introduction and networking phrases like “solo founder,” “indie hacker,” and “looking to connect” as posts appear.</p></article>
+        <article class="feature"><span class="feature-number mono">[02] STAY IN CONTROL</span><h3>Small panel. Useful controls.</h3><p>Check activity, pause with a click, or minimize the panel while it keeps running. Your panel size is remembered.</p></article>
+        <article class="feature"><span class="feature-number mono">[03] MAKE IT YOURS</span><h3>Readable code, yours to tune.</h3><p>Adjust the matching score, delays, and follow limit in the source. Inspect every line, fork it, or build on it.</p></article>
+      </div>
+    </section>
+    <section id="in-action" class="wrap screens">
+      <div class="section-label mono">STRAIGHT FROM THE TIMELINE</div>
+      <h2>This is what it actually looks like.</h2>
+      <p class="section-copy">X as usual, with the SolarFren dashboard tucked into the corner.</p>
+      <figure class="showcase"><a href="assets/xautofollow-in-action.png" aria-label="Open the full-resolution screenshot"><img src="assets/xautofollow-in-action.png" alt="SolarFren running on the X home timeline. The compact dashboard sits at the bottom right, showing scanning status and a pause button." width="1574" height="975" loading="lazy"></a><figcaption>SolarFren v1.0.1 on X · real screenshot · click to view full size.</figcaption></figure>
+    </section>
+    <section id="install" class="install-section"><div class="wrap install-grid">
+      <div><div class="section-label mono">READY WHEN YOU ARE</div><h2>Meet your next fren.</h2><p class="section-copy">Install once, then open your timeline.</p><div class="actions"><a class="button primary" href="https://raw.githubusercontent.com/solarfren69420/xautofollow/main/dist/xautofollow.user.js">Get SolarFren <span aria-hidden="true">↗</span></a></div><p class="note">The default 40-per-hour counter applies to this page session; reloading or opening another tab starts a separate counter. X may enforce its own limits.</p></div>
+      <ol class="steps"><li><div><h3>Add Tampermonkey</h3><p>Install the <a href="https://www.tampermonkey.net/">Tampermonkey browser extension</a> and enable userscripts for your browser.</p></div></li><li><div><h3>Install the userscript</h3><p>Click “Get SolarFren,” review the script in Tampermonkey, and choose Install.</p></div></li><li><div><h3>Open X and scroll</h3><p>The panel starts scanning automatically. Use Pause to stop actions, − to minimize, and + to restore. Chat and message routes are excluded.</p></div></li></ol>
+    </div></section>
+  </main>
+  <footer class="wrap"><span class="mono">☀ SOLARFREN / BUILT ON THE OPEN INTERNET.</span><div><a href="https://github.com/solarfren69420/xautofollow/blob/main/src/xautofollow.user.js">Source</a><a href="https://github.com/solarfren69420/xautofollow/issues">Report an issue</a><a href="https://github.com/solarfren69420/xautofollow/blob/main/LICENSE">MIT license</a></div></footer>
+</body>
+</html>

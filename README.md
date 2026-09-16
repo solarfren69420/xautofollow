@@ -32,6 +32,7 @@ npm run check
   - `Solo founder`
   - `Indie hacker`
 - Handles short networking replies such as `Let's connect`
+- Scores and follows people inside quoted posts too
 - Automatically detects the logged-in X username
 - Never tries to follow your own account
 - Skips promoted posts

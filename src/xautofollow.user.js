@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SolarFren X AutoFollower
 // @namespace    https://github.com/solarfren69420
-// @version      1.0.1
+// @version      1.0.2
 // @description  Smart AutoFollower for founder, builder, indie hacker and networking posts on X.
 // @author       SolarFren
 // @license      MIT
@@ -24,10 +24,10 @@
 
     /******************************************************************
      * SOLARFREN X AUTOFOLLOWER
-     * v1.0.1
+     * v1.0.2
      ******************************************************************/
 
-    const VERSION = '1.0.1';
+    const VERSION = '1.0.2';
 
     /******************************************************************
      * CONFIGURATION
@@ -544,6 +544,18 @@
         );
     }
 
+    // A quoted post is rendered as a nested tweet card on X. It has its own
+    // author, status link, and tweet text, so it must be queued independently.
+    function getQuotedTweets(tweet) {
+        return Array.from(
+            tweet.querySelectorAll(
+                '[data-testid="tweet"]'
+            )
+        ).filter(
+            candidate => candidate !== tweet
+        );
+    }
+
     function getHandle(tweet) {
         const userBlock =
             tweet.querySelector(
@@ -945,7 +957,7 @@
      * QUEUE
      ******************************************************************/
 
-    function enqueueTweet(tweet) {
+    function enqueueTweet(tweet, includeQuoted = true) {
         if (
             !enabled ||
             isBlockedRoute()
@@ -999,6 +1011,12 @@
         ) {
             finishedKeys.add(key);
             return;
+        }
+
+        if (includeQuoted) {
+            getQuotedTweets(tweet).forEach(
+                quotedTweet => enqueueTweet(quotedTweet, false)
+            );
         }
 
         queuedKeys.add(key);

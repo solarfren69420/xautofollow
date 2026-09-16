@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SolarFren X AutoFollower
 // @namespace    https://github.com/solarfren69420
-// @version      1.0.0
+// @version      1.0.1
 // @description  Smart AutoFollower for founder, builder, indie hacker and networking posts on X.
 // @author       SolarFren
 // @license      MIT
@@ -24,10 +24,10 @@
 
     /******************************************************************
      * SOLARFREN X AUTOFOLLOWER
-     * v1.0.0
+     * v1.0.1
      ******************************************************************/
 
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /******************************************************************
      * CONFIGURATION
@@ -63,6 +63,14 @@
     let previousURL = location.href;
 
     let panelLastMessage = 'INITIALISING';
+
+    const PANEL_STORAGE_KEY = 'solarfren-x-autofollower-minimized';
+    let panelMinimized = false;
+    try {
+        panelMinimized = localStorage.getItem(PANEL_STORAGE_KEY) === 'true';
+    } catch {
+        // The dashboard still works when browser storage is unavailable.
+    }
 
     const queue = [];
 
@@ -1244,6 +1252,8 @@
                 ? `@${ownHandle}`
                 : 'detecting account…';
 
+        panel.style.width = panelMinimized ? '230px' : '300px';
+        panel.style.maxWidth = 'calc(100vw - 36px)';
         panel.innerHTML = `
 
             <div style="
@@ -1267,14 +1277,15 @@
 
                     <div>
                         <div style="
-                            font-size:15px;
+                            font-size:13px;
                             font-weight:850;
                             color:#fff;
                         ">
-                            ☀ SolarFren X AutoFollower
+                            ${panelMinimized ? '☀ SolarFren' : '☀ SolarFren X AutoFollower'}
                         </div>
 
                         <div style="
+                            display:${panelMinimized ? 'none' : 'block'};
                             margin-top:3px;
                             font-size:8.5px;
                             letter-spacing:1.15px;
@@ -1305,11 +1316,34 @@
                         ${statusText}
                     </div>
 
+                    <button
+                        id="sf-minimize"
+                        type="button"
+                        aria-label="${panelMinimized ? 'Restore dashboard' : 'Minimize dashboard'}"
+                        title="${panelMinimized ? 'Restore dashboard' : 'Minimize dashboard (keeps running)'}"
+                        aria-expanded="${!panelMinimized}"
+                        aria-controls="sf-panel-details"
+                        style="
+                            appearance:none;
+                            flex-shrink:0;
+                            width:28px;
+                            height:28px;
+                            border:1px solid rgba(29,155,240,.4);
+                            border-radius:8px;
+                            background:rgba(29,155,240,.12);
+                            color:#e7e9ea;
+                            cursor:pointer;
+                            font-size:18px;
+                            line-height:1;
+                        "
+                    >${panelMinimized ? '+' : '−'}</button>
+
                 </div>
 
             </div>
 
-            <div style="
+            <div id="sf-panel-details" style="
+                display:${panelMinimized ? 'none' : 'block'};
                 padding:13px 15px 14px;
             ">
 
@@ -1506,6 +1540,18 @@
     panel.addEventListener(
         'click',
         event => {
+
+            if (event.target.closest('#sf-minimize')) {
+                panelMinimized = !panelMinimized;
+                try {
+                    localStorage.setItem(PANEL_STORAGE_KEY, String(panelMinimized));
+                } catch {
+                    // Remember the choice for this page even without storage.
+                }
+                updatePanel();
+                panel.querySelector('#sf-minimize')?.focus();
+                return;
+            }
 
             const button =
                 event.target.closest(

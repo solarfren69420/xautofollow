@@ -42,6 +42,7 @@ npm run check
   - `/messages`
 - Built-in hourly local follow limit
 - Pause / Resume control
+- Minimize / Restore control with the panel size remembered across page reloads
 - Live SolarFren dashboard
 
 ## Install
@@ -67,6 +68,9 @@ The panel displays:
 - **LAST ACTION** — most recent matcher/follower action
 
 Click **PAUSE** at any time to stop automatic actions.
+
+Click **−** in the header to minimize the dashboard to a small status bar, and
+**+** to restore it. Following continues while minimized; use **PAUSE** to stop it.
 
 ## Matching
 

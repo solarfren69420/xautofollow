@@ -1,0 +1,12 @@
+{
+  "name": "solarfren-x-autofollow",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SolarFren X AutoFollower Tampermonkey userscript",
+  "license": "MIT",
+  "scripts": {
+    "build": "node build.cjs",
+    "check": "node --check src/xautofollow.user.js && node --check dist/xautofollow.user.js"
+  },
+  "devDependencies": { "terser": "^5.44.0" }
+}
